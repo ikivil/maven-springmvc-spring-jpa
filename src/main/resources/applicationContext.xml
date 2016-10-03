@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 	http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx  		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop 		http://www.springframework.org/schema/aop/spring-aop.xsd ">
+	
+	<!-- 使用注解， 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
+    <context:component-scan base-package="com.k.kpp.business">
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+	
+    <bean  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="location">
+		<value>classpath:/db/db.properties</value>
+	</property>
+</bean>
+ 
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <property name="driverClass" value="${jdbc.driverClassName}"/>
+    <property name="jdbcUrl" value="${jdbc.url}"/>
+    <property name="user" value="${jdbc.username}"/>   
+    <property name="password" value="${jdbc.password}"/>
+   	 <!-- C3P0初始化连接数 ，Default:3   -->
+    <property name="initialPoolSize" value="3"/>
+</bean>
+	
+	
+	
+</beans>
